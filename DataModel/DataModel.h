@@ -16,6 +16,11 @@
 
 #include <zmq.hpp>
 
+#include <WCTERawData.h>
+#include <ReadoutWindow.h>
+
+#include <deque>
+
 using namespace ToolFramework;
 
 /**
@@ -31,10 +36,16 @@ using namespace ToolFramework;
 
 class DataModel : public DAQDataModelBase {
 
-
  public:
+  ReadoutWindow* currentReadoutWindow;
+   std::deque<ReadoutWindow*> readout_window_vector;
+  int max_deque_length;
+
+  
+  // std::vector<ReadoutWindow> readout_window_vector;
   
   DataModel(); ///< Simple constructor 
+  ~DataModel();
 
   //TTree* GetTTree(std::string name);
   //void AddTTree(std::string name,TTree *tree);

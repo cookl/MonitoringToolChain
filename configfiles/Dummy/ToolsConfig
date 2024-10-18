@@ -1,3 +1,5 @@
-test1 DummyTool configfiles/Dummy/DummyToolConfig
-test2 DummyTool configfiles/Dummy/DummyToolConfig
-Example Example Null
+#test1 DummyTool configfiles/Dummy/DummyToolConfig
+#test2 DummyTool configfiles/Dummy/DummyToolConfig
+SendFakeData SendFakeData Null
+#Example Example Null
+TriggerEventDisplay TriggerEventDisplay Null

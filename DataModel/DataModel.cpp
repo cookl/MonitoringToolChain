@@ -1,6 +1,9 @@
 #include "DataModel.h"
 
-DataModel::DataModel():DAQDataModelBase(){}
+DataModel::DataModel():DAQDataModelBase(),max_deque_length(10){}
+
+
+// DataModel::DataModel():DAQDataModelBase(){}
 
 /*
 TTree* DataModel::GetTTree(std::string name){

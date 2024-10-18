@@ -1,12 +1,12 @@
-#include "Example.h"
+#include "TriggerEventDisplay.h"
 #include <vector>
 #include"TGraph.h"
 #include "TBufferJSON.h"
 
-Example::Example():Tool(){}
+TriggerEventDisplay::TriggerEventDisplay():Tool(){}
 
 
-bool Example::Initialise(std::string configfile, DataModel &data){
+bool TriggerEventDisplay::Initialise(std::string configfile, DataModel &data){
 
   InitialiseTool(data);
   InitialiseConfiguration(configfile);
@@ -26,14 +26,13 @@ bool Example::Initialise(std::string configfile, DataModel &data){
 }
 
 
-bool Example::Execute(){
+bool TriggerEventDisplay::Execute(){
   // if(m_data->currentReadoutWindow==nullptr) return true;
-  
-  /* comment out 
+
   std::cout << "Call execute loop for monitoring program "<< std::endl;
   //always process the last event
   std::cout << "Readout window vector size" <<m_data->readout_window_vector.size() << std::endl;
-  std::cout << "First Hit card " <<m_data->currentReadoutWindow.mpmt_hits[0].GetCardID() << " ch "<< m_data->currentReadoutWindow.mpmt_hits[0].GetChannel() << std::endl;
+  std::cout << "First Hit card " <<m_data->currentReadoutWindow->mpmt_hits[0].GetCardID() << " ch "<< m_data->currentReadoutWindow->mpmt_hits[0].GetChannel() << std::endl;
   
   std::string graphName = "Event display "+std::to_string(iEv);
   
@@ -41,10 +40,10 @@ bool Example::Execute(){
   std::vector<int> hit_chanel_id;
   std::vector<double> hit_charge;
   
-  for(int i=0; i<m_data->currentReadoutWindow.mpmt_hits.size(); i++){
-    hit_chanel_id.push_back(m_data->currentReadoutWindow.mpmt_hits[i].GetChannel());
-    hit_card_id.push_back(m_data->currentReadoutWindow.mpmt_hits[i].GetCardID());
-    hit_charge.push_back(m_data->currentReadoutWindow.mpmt_hits[i].GetCharge());
+  for(int i=0; i<m_data->currentReadoutWindow->mpmt_hits.size(); i++){
+    hit_chanel_id.push_back(m_data->currentReadoutWindow->mpmt_hits[i].GetChannel());
+    hit_card_id.push_back(m_data->currentReadoutWindow->mpmt_hits[i].GetCardID());
+    hit_charge.push_back(m_data->currentReadoutWindow->mpmt_hits[i].GetCharge());
   }
   std::cout << "Call makeEventDisplayPlot " << std::endl;
   TScatter* eventDisplayScatter = eventDisplay.makeEventDisplayPlot(graphName,hit_card_id,hit_chanel_id,hit_charge);
@@ -52,8 +51,9 @@ bool Example::Execute(){
 
   // convert the TGraph to JSON
 	std::cout<<"Converting to JSON"<<std::endl;
-	std::string graph_json = TBufferJSON::ToJSON(canvas).Data();
+	std::string graph_json = TBufferJSON::ToJSON(eventDisplayScatter).Data();
 	
+  std::string graph_draw_options = "AP";
 	
 	// each time the same unique name is inserted, a new version of the plot is stored.
 	// when saving a new version over TCP we may optionally pass a pointer to an integer,
@@ -64,7 +64,8 @@ bool Example::Execute(){
 	// For now this setting only affects whether the request is sent over multicast (false, default) or tcp (true)
 	// At a later date we may add the option for plots to only be stored in a temporary table.
 	std::cout<<"Sending to database via TCP"<<std::endl;
-  m_data->services->SendTemporaryROOTplot(graph_name, graph_draw_options, graph_json, &graph_db_ver, 0);
+
+  // m_data->services->SendTemporaryROOTplot(graphName, graph_draw_options, graph_json, &graph_db_ver, 0);
   // SendTemporaryROOTplot(plot_name, draw_options, json_data, version, timestamp);
 	// bool ok = DAQ_inter.SendROOTplot(graph_name, graph_draw_options, graph_json, persistent, &graph_db_ver);
 
@@ -73,13 +74,12 @@ bool Example::Execute(){
 
 
   iEv++;
-  */
   return true;
 }
 
 
-bool Example::Finalise(){
-  std::cout <<"Finalise Example" << std::endl;
+bool TriggerEventDisplay::Finalise(){
+  std::cout <<"Finalise TriggerEventDisplay" << std::endl;
   return true;
 }
 

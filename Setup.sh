@@ -5,6 +5,7 @@
 Dependencies=`pwd`/Dependencies
 
 #source ${ToolDAQapp}/ToolDAQ/root/bin/thisroot.sh
+source /host/root_v6-32-04/root_install/bin/thisroot.sh
 
 export LD_LIBRARY_PATH=`pwd`/lib:${Dependencies}/zeromq-4.0.7/lib:${Dependencies}/boost_1_66_0/install/lib:${Dependencies}/ToolFrameworkCore/lib:${Dependencies}/ToolDAQFramework/lib:$LD_LIBRARY_PATH
 
