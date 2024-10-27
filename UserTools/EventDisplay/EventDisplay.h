@@ -19,7 +19,7 @@ class EventDisplay{
 public:
     EventDisplay(){return;};
     EventDisplay(const std::string& mPMTOrientations_csv, const std::string& mPMT_2D_projection_csv,const std::string& cardIDChannelMappingFile);
-    TScatter* makeEventDisplayPlot(std::string graphName,std::vector<int> cardID_vector, std::vector<int> channelID_vector, std::vector<double> hit_data);
+    TScatter makeEventDisplayPlot(std::string graphName,std::vector<int> cardID_vector, std::vector<int> channelID_vector, std::vector<double> hit_data);
     
     std::vector<std::vector<int>> debug_getcardIDChannelMapping(){return cardIDChannelMapping;}
 

@@ -213,8 +213,16 @@ std::tuple<int, std::vector<double>, std::vector<double>, std::vector<double>> E
 
     for(int i=0; i<hit_data.size(); i++){
         int cardID = cardID_vector[i];
+        
         int channelID = channelID_vector[i];
-        int channelIndex= cardIDChannelIndex[cardID*100+channelID];
+        int key = cardID * 100 + channelID;
+        
+        if (cardIDChannelIndex.count(key) == 0){
+            std::cout << "cardID " <<cardID << " channelID " << channelID << " not in event display " << std::endl;
+            continue;
+        }
+        int channelIndex= cardIDChannelIndex[key];
+        
         if(channelFilled[channelIndex]==false){
             //this channel has had no data before
             allChannelData[channelIndex] = hit_data[i];            
@@ -255,25 +263,25 @@ std::tuple<int, std::vector<double>, std::vector<double>, std::vector<double>> E
 
 }
 
-TScatter* EventDisplay::makeEventDisplayPlot(std::string graphName,std::vector<int> cardID_vector, std::vector<int> channelID_vector, std::vector<double> hit_data){
+TScatter EventDisplay::makeEventDisplayPlot(std::string graphName,std::vector<int> cardID_vector, std::vector<int> channelID_vector, std::vector<double> hit_data){
     int nHits;
     std::vector<double> x ,y, hit_value;
 
     std::tie(nHits,x ,y, hit_value) = processData(cardID_vector,channelID_vector, hit_data, false);
-    TScatter *scatter = new TScatter(nHits, &x[0], &y[0],&hit_value[0]);
+    TScatter scatter(nHits, &x[0], &y[0],&hit_value[0]);
     
-    scatter->GetHistogram()->GetXaxis()->SetLimits(-2, 17);
-    scatter->GetHistogram()->GetYaxis()->SetLimits(-7, 9);
+    scatter.GetHistogram()->GetXaxis()->SetLimits(-2, 17);
+    scatter.GetHistogram()->GetYaxis()->SetLimits(-7, 9);
     
-    // scatter->GetHistogram()->GetXaxis()->SetLabelSize(0);
-    // scatter->GetHistogram()->GetYaxis()->SetLabelSize(0);
-    // scatter->GetHistogram()->GetZaxis()->SetLabelSize(10);
-    // scatter->GetHistogram()->GetXaxis()->SetTickLength(0);
-    // scatter->GetHistogram()->GetYaxis()->SetTickLength(0);
+    // scatter.GetHistogram()->GetXaxis()->SetLabelSize(0);
+    // scatter.GetHistogram()->GetYaxis()->SetLabelSize(0);
+    // scatter.GetHistogram()->GetZaxis()->SetLabelSize(10);
+    // scatter.GetHistogram()->GetXaxis()->SetTickLength(0);
+    // scatter.GetHistogram()->GetYaxis()->SetTickLength(0);
 
 
-    scatter->SetMarkerStyle(20);
-    scatter->SetMarkerSize(1.0);
+    scatter.SetMarkerStyle(20);
+    scatter.SetMarkerSize(1.0);
 
     return scatter;
 

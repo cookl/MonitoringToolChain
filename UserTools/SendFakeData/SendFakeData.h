@@ -39,7 +39,9 @@ class SendFakeData: public Tool {
   std::vector<std::vector<int>> ReadCSV_int(const std::string& filename);
   std::vector<int> channelList;  
   DataModel* m_data;
-  
+  int runNo; //make this common every time the chain is run 
+  std::chrono::time_point<std::chrono::steady_clock> last_sending_data;
+
 
 
 };
